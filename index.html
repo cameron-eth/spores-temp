@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spores Order Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <img src="s.png" alt="Spores logo" class="h-10">
+            <nav>
+                <button id="menuToggle" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    Menu
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">About</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Products</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Listen to Spores</h2>
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe
+                    src="https://open.spotify.com/embed/track/1GhXFdjJ9Y9b157a2bY04y?utm_source=generator"
+                    class="w-full h-full rounded-md"
+                    frameborder="0"
+                    allowfullscreen=""
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">Order Form</h2>
+            <iframe
+                id="JotFormIFrame-240427922825155"
+                title="Spores Order Form"
+                class="w-full h-[539px] border-none"
+                src="https://form.jotform.com/240427922825155"
+                frameborder="0"
+                scrolling="no"
+                allow="geolocation; microphone; camera">
+            </iframe>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">3D Model</h2>
+            <model-viewer
+                src="spores.glb"
+                alt="Spores 3D model"
+                auto-rotate
+                camera-controls
+                class="w-full h-[400px] bg-gray-100 rounded-md"
+                interaction-prompt="none"
+                camera-orbit="45deg 55deg 2.5m"
+                min-camera-orbit="auto auto 1.5m"
+                max-camera-orbit="auto auto 3.5m">
+                <button class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md text-sm" slot="ar-button">
+                    View in AR
+                </button>
+            </model-viewer>
+        </section>
+    </main>
+
+    <footer class="bg-white py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+            © 2024 Spores. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Dropdown menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!menuToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // JotForm iframe script
+        var ifr = document.getElementById("JotFormIFrame-240427922825155");
+        if (ifr) {
+            var src = ifr.src;
+            var iframeParams = [];
+            if (window.location.href && window.location.href.indexOf("?") > -1) {
+                iframeParams = iframeParams.concat(window.location.href.substr(window.location.href.indexOf("?") + 1).split('&'));
+            }
+            if (src && src.indexOf("?") > -1) {
+                iframeParams = iframeParams.concat(src.substr(src.indexOf("?") + 1).split("&"));
+                src = src.substr(0, src.indexOf("?"))
+            }
+            iframeParams.push("isIframeEmbed=1");
+            ifr.src = src + "?" + iframeParams.join('&');
+        }
+
+        window.handleIFrameMessage = function(e) {
+            if (typeof e.data === 'object') { return; }
+            var args = e.data.split(":");
+            var iframe = document.getElementById("JotFormIFrame-" + (args.length > 2 ? args[(args.length - 1)] : '240427922825155'));
+            if (!iframe) { return; }
+            switch (args[0]) {
+                case "scrollIntoView":
+                    iframe.scrollIntoView();
+                    break;
+                case "setHeight":
+                    iframe.style.height = args[1] + "px";
+                    break;
+                case "reloadPage":
+                    window.location.reload();
+                    break;
+                case "loadScript":
+                    if (!window.isPermitted(e.origin, ['jotform.com', 'jotform.pro'])) { break; }
+                    var src = args[1] + (args.length > 3 ? ':' + args[2] : '');
+                    var script = document.createElement('script');
+                    script.src = src;
+                    document.body.appendChild(script);
+                    break;
+            }
+            var isJotForm = e.origin.indexOf("jotform") > -1;
+            if (isJotForm && "contentWindow" in iframe && "postMessage" in iframe.contentWindow) {
+                var urls = {"docurl": encodeURIComponent(document.URL), "referrer": encodeURIComponent(document.referrer)};
+                iframe.contentWindow.postMessage(JSON.stringify({"type": "urls", "value": urls}), "*");
+            }
+        };
+
+        window.isPermitted = function(originUrl, whitelisted_domains) {
+            var url = document.createElement('a');
+            url.href = originUrl;
+            var hostname = url.hostname;
+            return whitelisted_domains.some(domain => hostname.slice((-1 * domain.length - 1)) === '.'.concat(domain) || hostname === domain);
+        };
+
+        if (window.addEventListener) {
+            window.addEventListener("message", handleIFrameMessage, false);
+        } else if (window.attachEvent) {
+            window.attachEvent("onmessage", handleIFrameMessage);
+        }
+    </script>
+</body>
+</html>
